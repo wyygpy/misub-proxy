@@ -43,4 +43,14 @@ MiSub 的 Fetch Proxy：部署在 Vercel 上的单文件 Serverless 代理（`ap
 https://<域名>.vercel.app/api?token=<PROXY_TOKEN>&url=
 ```
 
+**自定义上游 User-Agent**：追加 `ua` 参数，值建议 URL 编码。取值优先级为 `?ua=` 参数 → `x-user-agent` 请求头 → 默认 `clash-verge/v2.4.3`。
+
+```
+https://<域名>.vercel.app/api?token=<PROXY_TOKEN>&ua=clash-verge%2Fv2.4.3&url=
+```
+
+在 MiSub 中也可只填上面带 `token` 的前缀，再在订阅源选择「自定义 User-Agent」，由 MiSub 自动拼接 `ua` 参数（前缀中已手写 `ua=` 时不会重复添加）。
+
+`ua` 值仅支持 ASCII 字符（含中文等非 ASCII 会导致上游请求失败）。机场按 UA 区分订阅格式时，须使用 Clash 类 UA（如 `clash-verge/v2.4.3`、`clash.meta/v1.19.0`、`mihomo/1.18.0`），否则可能返回非 YAML 格式且缺失 `subscription-userinfo`。
+
 令牌只存于 Vercel 环境变量，不要写入仓库。
